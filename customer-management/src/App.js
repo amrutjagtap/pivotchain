@@ -14,6 +14,9 @@ import { toast, ToastContainer } from "react-toastify";
 import moment from "moment";
 import { FaEdit } from "react-icons/fa";
 import { FaTrashCan } from "react-icons/fa6";
+import DigitalClock from "./CommonComponents/DigitalClock";
+import { FaUsers, FaUsersSlash, FaUsersCog } from "react-icons/fa";
+import { BiSolidUserPlus } from "react-icons/bi";
 // import './App.css';
 
 const App = () => {
@@ -230,44 +233,58 @@ const App = () => {
       <ToastContainer />
 
       <div className="container-fluid">
-        <div className="row text-center bg-primary text-light">
-          <h3>Customer Management</h3>
+        <div className="row header-bg">
+          <div className="col-6">
+            <h2 className="text-light">Customer Management</h2>
+          </div>
+          <div className="col-6" style={{ textAlign: "right", color: "#fff" }}>
+            <DigitalClock />
+          </div>
         </div>
       </div>
 
-      <div className="container">
+      <div className="container mt-3">
         {/* CARDS */}
         <div className="row">
           <div className="col-sm-12 col-md-4 card-wrapper">
-            <div className="card-all">
-              <strong>All Customers</strong>
-              <h3>{custData.length}</h3>
+            <div className="card-container card-all">
+              <div className="icon-container card-all">
+                <FaUsers />
+              </div>
+              <h2>{custData.length}</h2>
+              <strong>ALL CUSTOMERS</strong>
             </div>
           </div>
           <div className="col-sm-12 col-md-4 card-wrapper">
-            <div className="card-active">
-              <strong>Active Customers</strong>
-              <h3>
+            <div className="card-container card-active">
+              <div className="icon-container card-active">
+                <FaUsersCog />
+              </div>
+              <h2>
                 {custData.filter((item) => item.status === "active").length}
-              </h3>
+              </h2>
+              <strong>ACTIVE CUSTOMERS</strong>
             </div>
           </div>
           <div className="col-sm-12 col-md-4 card-wrapper">
-            <div className="card-inactive">
-              <strong>Inactive Customers</strong>
-              <h3>
+            <div className="card-container card-inactive">
+              <div className="icon-container card-inactive">
+                <FaUsersSlash />
+              </div>
+              <h2>
                 {custData.filter((item) => item.status === "inactive").length}
-              </h3>
+              </h2>
+              <strong>INACTIVE CUSTOMERS</strong>
             </div>
           </div>
         </div>
 
-        <div className="row">
-          <h4>Customer List</h4>
-          <hr />
+        <div className="row mt-3 table-container">
+          <h3 className="my-2">Customer List</h3>
+          <hr style={{ borderColor: "#ABB2B9" }} />
           <div className="col-sm-3 mb-3">
-            <button className="btn btn-primary" onClick={() => setShow(true)}>
-              New Customer
+            <button className="btn btn-add" onClick={() => setShow(true)}>
+              <BiSolidUserPlus fontSize={26} /> New Customer
             </button>
           </div>
           <div className="col-sm-3 offset-sm-6">
@@ -281,18 +298,18 @@ const App = () => {
               }}
             />
           </div>
-          <Table bordered hover responsive="sm">
+          <Table bordered hover responsive="md">
             <thead>
-              <tr className="table-bgdark">
-                <th>Id</th>
-                <th>Customer Id</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Mobile</th>
-                <th>Address</th>
-                <th>Status</th>
-                <th>Created Date</th>
-                <th>Action</th>
+              <tr>
+                <th className="table-bgdark">Id</th>
+                <th className="table-bgdark">Customer Id</th>
+                <th className="table-bgdark">Name</th>
+                <th className="table-bgdark">Email</th>
+                <th className="table-bgdark">Mobile</th>
+                <th className="table-bgdark">Address</th>
+                <th className="table-bgdark">Status</th>
+                <th className="table-bgdark">Created Date</th>
+                <th className="table-bgdark">Action</th>
               </tr>
             </thead>
             <tbody>
@@ -345,95 +362,111 @@ const App = () => {
         keyboard={false}
       >
         <Form onSubmit={custId === null ? handleSubmit : handleUpdate}>
-          <Modal.Header closeButton>
+          {/* <Modal.Header closeButton>
             <Modal.Title>{modalTitle}</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <Form.Group controlId="name">
-              <Form.Label className="fw-bold">Name:</Form.Label>
-              <Form.Control
-                type="text"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                isInvalid={!!errors.name}
-              />
-              <Form.Control.Feedback type="invalid">
-                {errors.name}
-              </Form.Control.Feedback>
-            </Form.Group>
+          </Modal.Header> */}
+          <Modal.Body style={{ padding: 0 }}>
+            <h3 className="modal-title">
+              {modalTitle}
+            </h3>
 
-            <Form.Group controlId="email">
-              <Form.Label className="fw-bold">Email:</Form.Label>
-              <Form.Control
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                isInvalid={!!errors.email}
-              />
-              <Form.Control.Feedback type="invalid">
-                {errors.email}
-              </Form.Control.Feedback>
-            </Form.Group>
+            <div className="px-3">
+              <Form.Group controlId="name" className="mt-2">
+                <Form.Label className="fw-bold">Name:</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="name"
+                  placeholder="Enter Full Name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  isInvalid={!!errors.name}
+                />
+                <Form.Control.Feedback type="invalid">
+                  {errors.name}
+                </Form.Control.Feedback>
+              </Form.Group>
 
-            <Form.Group controlId="contact">
-              <Form.Label className="fw-bold">Contact:</Form.Label>
-              <Form.Control
-                type="text"
-                name="contact"
-                value={formData.contact}
-                onChange={handleChange}
-                isInvalid={!!errors.contact}
-              />
-              <Form.Control.Feedback type="invalid">
-                {errors.contact}
-              </Form.Control.Feedback>
-            </Form.Group>
+              <Form.Group controlId="email" className="mt-2">
+                <Form.Label className="fw-bold">Email:</Form.Label>
+                <Form.Control
+                  type="email"
+                  name="email"
+                  placeholder="Enter Email Id"
+                  value={formData.email}
+                  onChange={handleChange}
+                  isInvalid={!!errors.email}
+                />
+                <Form.Control.Feedback type="invalid">
+                  {errors.email}
+                </Form.Control.Feedback>
+              </Form.Group>
 
-            <Form.Group controlId="address">
-              <Form.Label className="fw-bold">Address:</Form.Label>
-              <Form.Control
-                as="textarea"
-                rows={3}
-                name="address"
-                value={formData.address}
-                onChange={handleChange}
-                isInvalid={!!errors.address}
-              />
-              <Form.Control.Feedback type="invalid">
-                {errors.address}
-              </Form.Control.Feedback>
-            </Form.Group>
+              <Form.Group controlId="contact" className="mt-2">
+                <Form.Label className="fw-bold">Contact:</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="contact"
+                  placeholder="Enter Mobile No"
+                  value={formData.contact}
+                  onChange={handleChange}
+                  isInvalid={!!errors.contact}
+                />
+                <Form.Control.Feedback type="invalid">
+                  {errors.contact}
+                </Form.Control.Feedback>
+              </Form.Group>
 
-            <Form.Group controlId="status" className="mb-3">
-              <Form.Label className="fw-bold">Status:</Form.Label>
-              <Form.Control
-                as="select"
-                name="status"
-                value={formData.status}
-                onChange={handleChange}
-              >
-                <option value="active">Active</option>
-                <option value="inactive">Inactive</option>
-              </Form.Control>
-            </Form.Group>
+              <Form.Group controlId="address" className="mt-2">
+                <Form.Label className="fw-bold">Address:</Form.Label>
+                <Form.Control
+                  as="textarea"
+                  rows={3}
+                  name="address"
+                  placeholder="Enter Permanent Address"
+                  value={formData.address}
+                  onChange={handleChange}
+                  isInvalid={!!errors.address}
+                />
+                <Form.Control.Feedback type="invalid">
+                  {errors.address}
+                </Form.Control.Feedback>
+              </Form.Group>
+
+              <Form.Group controlId="status" className="mb-3 mt-2">
+                <Form.Label className="fw-bold">Status:</Form.Label>
+                <Form.Control
+                  as="select"
+                  name="status"
+                  value={formData.status}
+                  onChange={handleChange}
+                >
+                  <option value="active">Active</option>
+                  <option value="inactive">Inactive</option>
+                </Form.Control>
+              </Form.Group>
+            </div>
           </Modal.Body>
-          <Modal.Footer>
+          <Modal.Footer
+            style={{
+              alignItems: "flex-start",
+              display: "flex",
+              justifyContent: "flex-start",
+            }}
+          >
             <Button
-              variant="secondary"
+              type="submit"
+              className={custId === null ? "btn-save" : "btn-update"}
+            >
+              {custId === null ? "SAVE" : "UPDATE"}
+            </Button>
+            <Button
+              className="btn-cancel"
               onClick={() => {
                 clearForm();
                 setShow(false);
               }}
             >
-              Close
-            </Button>
-            <Button
-              type="submit"
-              variant={custId === null ? "primary" : "warning"}
-            >
-              {custId === null ? "SAVE" : "UPDATE"}
+              Cancel
             </Button>
           </Modal.Footer>
         </Form>
